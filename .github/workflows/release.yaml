@@ -69,7 +69,7 @@ jobs:
         run: |
           NOTES="./output/notes.md"
           echo '## CLI Changelog' > ${NOTES}
-          github-release-notes -org weaveworks -repo weave-assured-flux2 -since-latest-release -include-author >> ${NOTES}
+          github-release-notes -org fluxcd -repo flux2 -since-latest-release -include-author >> ${NOTES}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run GoReleaser
