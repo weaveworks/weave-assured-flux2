@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- https://github.com/weaveworks/weave-assured-source-controller/releases/download/v1.1.0-wa/source-controller.crds.yaml
-- https://github.com/weaveworks/weave-assured-source-controller/releases/download/v1.1.0-wa/source-controller.deployment.yaml
+- https://github.com/weaveworks/weave-assured-source-controller/releases/download/v1.1.0-wa/weave-assured-source-controller.crds.yaml
+- https://github.com/weaveworks/weave-assured-source-controller/releases/download/v1.1.0-wa/weave-assured-source-controller.deployment.yaml
 - account.yaml
 transformers:
 - labels.yaml

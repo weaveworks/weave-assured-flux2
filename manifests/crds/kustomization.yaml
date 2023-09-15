@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- https://github.com/weaveworks/weave-assured-source-controller/releases/download/v1.1.0-wa/source-controller.crds.yaml
-- https://github.com/weaveworks/weave-assured-kustomize-controller/releases/download/v1.1.0-wa/kustomize-controller.crds.yaml
-- https://github.com/weaveworks/weave-assured-helm-controller/releases/download/v0.36.0-wa/helm-controller.crds.yaml
-- https://github.com/weaveworks/weave-assured-notification-controller/releases/download/v1.1.0-wa/notification-controller.crds.yaml
-- https://github.com/weaveworks/weave-assured-image-reflector-controller/releases/download/v0.30.0-wa/image-reflector-controller.crds.yaml
-- https://github.com/weaveworks/weave-assured-image-automation-controller/releases/download/v0.36.0-wa/image-automation-controller.crds.yaml
+- https://github.com/weaveworks/weave-assured-source-controller/releases/download/v1.1.0-wa/weave-assured-source-controller.crds.yaml
+- https://github.com/weaveworks/weave-assured-kustomize-controller/releases/download/v1.1.0-wa/weave-assured-kustomize-controller.crds.yaml
+- https://github.com/weaveworks/weave-assured-helm-controller/releases/download/v0.36.0-wa/weave-assured-helm-controller.crds.yaml
+- https://github.com/weaveworks/weave-assured-notification-controller/releases/download/v1.1.0-wa/weave-assured-notification-controller.crds.yaml
+- https://github.com/weaveworks/weave-assured-image-reflector-controller/releases/download/v0.30.0-wa/weave-assured-image-reflector-controller.crds.yaml
+- https://github.com/weaveworks/weave-assured-image-automation-controller/releases/download/v0.36.0-wa/weave-assured-image-automation-controller.crds.yaml
