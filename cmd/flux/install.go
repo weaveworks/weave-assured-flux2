@@ -63,6 +63,7 @@ type installFlags struct {
 	defaultComponents  []string
 	extraComponents    []string
 	registry           string
+	assured            bool
 	imagePullSecret    string
 	branch             string
 	watchAllNamespaces bool
@@ -86,8 +87,8 @@ func init() {
 	installCmd.Flags().StringSliceVar(&installArgs.extraComponents, "components-extra", nil,
 		"list of components in addition to those supplied or defaulted, accepts values such as 'image-reflector-controller,image-automation-controller'")
 	installCmd.Flags().StringVar(&installArgs.manifestsPath, "manifests", "", "path to the manifest directory")
-	installCmd.Flags().StringVar(&installArgs.registry, "registry", rootArgs.defaults.Registry,
-		"container registry where the toolkit images are published")
+	installCmd.Flags().StringVar(&installArgs.registry, "registry", "", "container registry where the toolkit images are published")
+	installCmd.Flags().BoolVar(&bootstrapArgs.assured, "assured", false, "use weave-assured container images from the registry")
 	installCmd.Flags().StringVar(&installArgs.imagePullSecret, "image-pull-secret", "",
 		"Kubernetes secret name used for pulling the toolkit images from a private registry")
 	installCmd.Flags().BoolVar(&installArgs.watchAllNamespaces, "watch-all-namespaces", rootArgs.defaults.WatchAllNamespaces,
@@ -148,7 +149,7 @@ func installCmdRun(cmd *cobra.Command, args []string) error {
 		Version:                installArgs.version,
 		Namespace:              *kubeconfigArgs.Namespace,
 		Components:             components,
-		Registry:               installArgs.registry,
+		Registry:               installRegistry(),
 		ImagePullSecret:        installArgs.imagePullSecret,
 		WatchAllNamespaces:     installArgs.watchAllNamespaces,
 		NetworkPolicy:          installArgs.networkPolicy,
@@ -162,6 +163,9 @@ func installCmdRun(cmd *cobra.Command, args []string) error {
 
 	if installArgs.manifestsPath == "" {
 		opts.BaseURL = install.MakeDefaultOptions().BaseURL
+		if installArgs.assured {
+			opts.BaseURL = "https://github.com/weaveworks/weave-assured-flux2/releases"
+		}
 	}
 
 	manifest, err := install.Generate(opts, manifestsBase)
@@ -209,4 +213,14 @@ func installCmdRun(cmd *cobra.Command, args []string) error {
 
 	logger.Successf("install finished")
 	return nil
+}
+
+func installRegistry() string {
+	if installArgs.registry == "" {
+		installArgs.registry = rootArgs.defaults.Registry
+		if installArgs.assured {
+			installArgs.registry = "ghcr.io/weaveworks"
+		}
+	}
+	return installArgs.registry
 }

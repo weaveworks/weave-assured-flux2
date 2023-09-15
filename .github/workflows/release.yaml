@@ -92,7 +92,7 @@ jobs:
           hashes=$(echo -E $ARTIFACTS | jq --raw-output '.[] | {name, "digest": (.extra.Digest // .extra.Checksum)} | select(.digest) | {digest} + {name} | join("  ") | sub("^sha256:";"")' | base64 -w0)
           echo "hashes=$hashes" >> $GITHUB_OUTPUT
           
-          image_url=ghcr.io/weaveworks/weave-assured-flux-cli:$GITHUB_REF_NAME
+          image_url=ghcr.io/weaveworks/flux-cli:$GITHUB_REF_NAME
           echo "image_url=$image_url" >> $GITHUB_OUTPUT
           
           image_digest=$(docker buildx imagetools inspect ${image_url}  --format '{{json .}}' | jq -r .manifest.digest)
@@ -124,12 +124,12 @@ jobs:
       - name: Push manifests to GHCR
         run: |
           mkdir -p ./ghcr.io/flux-system
-          flux install --registry=ghcr.io/fluxcd \
+          flux install --registry=ghcr.io/weaveworks \
           --components-extra=image-reflector-controller,image-automation-controller \
           --export > ./ghcr.io/flux-system/gotk-components.yaml
           
           cd ./ghcr.io && flux push artifact \
-          oci://ghcr.io/weaveworks/weave-assured-flux-manifests:${{ steps.prep.outputs.version }} \
+          oci://ghcr.io/weaveworks/flux-manifests:${{ steps.prep.outputs.version }} \
           --path="./flux-system" \
           --source=${{ github.repositoryUrl }} \
           --revision="${{ github.ref_name }}@sha1:${{ github.sha }}"
@@ -138,10 +138,10 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: 1
         run: |
-          cosign sign --yes ghcr.io/weaveworks/weave-assured-flux-manifests:${{ steps.prep.outputs.version }}
+          cosign sign --yes ghcr.io/weaveworks/flux-manifests:${{ steps.prep.outputs.version }}
       - name: Tag manifests
         run: |
-          flux tag artifact oci://ghcr.io/weaveworks/weave-assured-flux-manifests:${{ steps.prep.outputs.version }} \
+          flux tag artifact oci://ghcr.io/weaveworks/flux-manifests:${{ steps.prep.outputs.version }} \
           --tag latest
 
   release-provenance:

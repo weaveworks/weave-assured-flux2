@@ -73,7 +73,7 @@ signs:
     output: true
 dockers:
 - image_templates:
-    - 'ghcr.io/weaveworks/weave-assured-flux-cli:{{ .Tag }}-amd64'
+    - 'ghcr.io/weaveworks/flux-cli:{{ .Tag }}-amd64'
   dockerfile: Dockerfile
   use: buildx
   goos: linux
@@ -88,7 +88,7 @@ dockers:
    - "--label=org.opencontainers.image.source={{ .GitURL }}"
    - "--platform=linux/amd64"
 - image_templates:
-    - 'ghcr.io/weaveworks/weave-assured-flux-cli:{{ .Tag }}-arm64'
+    - 'ghcr.io/weaveworks/flux-cli:{{ .Tag }}-arm64'
   dockerfile: Dockerfile
   use: buildx
   goos: linux
@@ -103,7 +103,7 @@ dockers:
     - "--label=org.opencontainers.image.source={{ .GitURL }}"
     - "--platform=linux/arm64"
 - image_templates:
-    - 'ghcr.io/weaveworks/weave-assured-flux-cli:{{ .Tag }}-arm'
+    - 'ghcr.io/weaveworks/flux-cli:{{ .Tag }}-arm'
   dockerfile: Dockerfile
   use: buildx
   goos: linux
@@ -119,11 +119,11 @@ dockers:
     - "--label=org.opencontainers.image.source={{ .GitURL }}"
     - "--platform=linux/arm/v7"
 docker_manifests:
-- name_template: 'ghcr.io/weaveworks/weave-assured-flux-cli:{{ .Tag }}'
+- name_template: 'ghcr.io/weaveworks/flux-cli:{{ .Tag }}'
   image_templates:
-    - 'ghcr.io/weaveworks/weave-assured-flux-cli:{{ .Tag }}-amd64'
-    - 'ghcr.io/weaveworks/weave-assured-flux-cli:{{ .Tag }}-arm64'
-    - 'ghcr.io/weaveworks/weave-assured-flux-cli:{{ .Tag }}-arm'
+    - 'ghcr.io/weaveworks/flux-cli:{{ .Tag }}-amd64'
+    - 'ghcr.io/weaveworks/flux-cli:{{ .Tag }}-arm64'
+    - 'ghcr.io/weaveworks/flux-cli:{{ .Tag }}-arm'
 docker_signs:
   - cmd: cosign
     env:
