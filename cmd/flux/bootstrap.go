@@ -73,6 +73,8 @@ type bootstrapFlags struct {
 	gpgKeyID       string
 
 	commitMessageAppendix string
+
+	assured bool
 }
 
 const (
@@ -90,8 +92,9 @@ func init() {
 	bootstrapCmd.PersistentFlags().StringSliceVar(&bootstrapArgs.extraComponents, "components-extra", nil,
 		"list of components in addition to those supplied or defaulted, accepts values such as 'image-reflector-controller,image-automation-controller'")
 
-	bootstrapCmd.PersistentFlags().StringVar(&bootstrapArgs.registry, "registry", "ghcr.io/fluxcd",
+	bootstrapCmd.PersistentFlags().StringVar(&bootstrapArgs.registry, "registry", "",
 		"container registry where the Flux controller images are published")
+	bootstrapCmd.PersistentFlags().BoolVar(&bootstrapArgs.assured, "assured", false, "use weave-assured container images from the registry")
 	bootstrapCmd.PersistentFlags().StringVar(&bootstrapArgs.imagePullSecret, "image-pull-secret", "",
 		"Kubernetes secret name used for pulling the controller images from a private registry")
 
@@ -146,6 +149,16 @@ func NewBootstrapFlags() bootstrapFlags {
 
 func bootstrapComponents() []string {
 	return append(bootstrapArgs.defaultComponents, bootstrapArgs.extraComponents...)
+}
+
+func bootstrapRegistry() string {
+	if bootstrapArgs.registry == "" {
+		bootstrapArgs.registry = rootArgs.defaults.Registry
+		if bootstrapArgs.assured {
+			bootstrapArgs.registry = "ghcr.io/weaveworks"
+		}
+	}
+	return bootstrapArgs.registry
 }
 
 func buildEmbeddedManifestBase() (string, error) {

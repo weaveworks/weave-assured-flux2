@@ -208,7 +208,7 @@ func bootstrapGitLabCmdRun(cmd *cobra.Command, args []string) error {
 		Version:                bootstrapArgs.version,
 		Namespace:              *kubeconfigArgs.Namespace,
 		Components:             bootstrapComponents(),
-		Registry:               bootstrapArgs.registry,
+		Registry:               bootstrapRegistry(),
 		ImagePullSecret:        bootstrapArgs.imagePullSecret,
 		WatchAllNamespaces:     bootstrapArgs.watchAllNamespaces,
 		NetworkPolicy:          bootstrapArgs.networkPolicy,
@@ -222,6 +222,8 @@ func bootstrapGitLabCmdRun(cmd *cobra.Command, args []string) error {
 	}
 	if customBaseURL := bootstrapArgs.manifestsPath; customBaseURL != "" {
 		installOptions.BaseURL = customBaseURL
+	} else if bootstrapArgs.assured {
+		installOptions.BaseURL = "https://github.com/weaveworks/weave-assured-flux2/releases"
 	}
 
 	// Source generation and secret config
