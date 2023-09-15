@@ -88,7 +88,7 @@ func init() {
 		"list of components in addition to those supplied or defaulted, accepts values such as 'image-reflector-controller,image-automation-controller'")
 	installCmd.Flags().StringVar(&installArgs.manifestsPath, "manifests", "", "path to the manifest directory")
 	installCmd.Flags().StringVar(&installArgs.registry, "registry", "", "container registry where the toolkit images are published")
-	installCmd.Flags().BoolVar(&bootstrapArgs.assured, "assured", false, "use weave-assured container images from the registry")
+	installCmd.Flags().BoolVar(&installArgs.assured, "assured", false, "use weave-assured container images from the registry")
 	installCmd.Flags().StringVar(&installArgs.imagePullSecret, "image-pull-secret", "",
 		"Kubernetes secret name used for pulling the toolkit images from a private registry")
 	installCmd.Flags().BoolVar(&installArgs.watchAllNamespaces, "watch-all-namespaces", rootArgs.defaults.WatchAllNamespaces,
